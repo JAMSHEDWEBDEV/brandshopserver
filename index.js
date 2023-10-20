@@ -34,6 +34,13 @@ async function run() {
         const result = await groceryCollection.insertOne(newProduct);
         res.send(result);
     })
+
+    // data get from database
+    app.get('/products', async(req,res)=>{
+      const cursor = groceryCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    })
     
 
     
