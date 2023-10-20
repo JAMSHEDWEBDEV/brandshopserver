@@ -41,6 +41,32 @@ async function run() {
       const result = await cursor.toArray();
       res.send(result);
     })
+
+    // update operation start 
+    app.get('/products/:id', async(req,res)=>{
+      const id = req.params.id;
+      const query = {_id: new ObjectId(id)};
+      const result = await groceryCollection.findOne(query);
+      res.send(result);
+    })
+    app.put('/products/:id', async(req,res)=>{
+      const id = req.params.id;
+      const updateProduct = req.body;
+      const filter = {_id: new ObjectId(id)};
+      const options = { upsert:true};
+      const product = {
+        $set:{
+          name:updateProduct.name, 
+          photo:updateProduct.photo, 
+          Category:updateProduct.Category,
+          Price:updateProduct.Price,
+          Rating:updateProduct.Rating,
+          Description:updateProduct.Description
+        }
+      }
+      const result = await groceryCollection.updateOne(filter,product,options);
+      res.send(result);
+    })
     
     // data delete operation start 
     app.delete('/products/:id', async(req,res)=>{
